@@ -1,9 +1,10 @@
+import 'package:flutter_us_news/src/base/base_di.dart';
+import 'package:flutter_us_news/src/data/datasource/news/api/news_api_data_provider.dart';
 import 'package:flutter_us_news/src/data/di/data_di.dart';
 import 'package:flutter_us_news/src/domain/di/domain_di.dart';
 import 'package:get_it/get_it.dart';
-import 'package:sqflite/sqflite.dart';
 
-class DI {
+class DI implements BaseDi {
   static final DI _singleton = DI._internal();
 
   static DI instance() {
@@ -14,16 +15,14 @@ class DI {
 
   final getIt = GetIt.instance;
 
-  Database? _database;
-
+  @override
   Future<bool> provideDependencies() async {
-    if (_database == null) {
-      _database ??= await openDatabase('my_db.db');
-      getIt.registerSingleton<Database>(_database!);
-
-      DataDI();
-      DomainDI();
-    }
+    await DataDI().provideDependencies();
+    await DomainDI().provideDependencies();
     return Future.value(true);
+  }
+
+  NewsApiDataProvider getNewsApiDataProvider() {
+    return getIt<NewsApiDataProvider>();
   }
 }
