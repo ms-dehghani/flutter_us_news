@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_us_news/src/data/constants/constants.dart';
+import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
 import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
+import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 
 class NewsApiDataProvider extends NewsDataProvider {
   final Dio _dio;
@@ -18,16 +19,39 @@ class NewsApiDataProvider extends NewsDataProvider {
       {required int from,
       required int to,
       required List<String> queries,
-      required String sortBy,
+      required SortBy sortBy,
       required int pageNumber}) async {
-    String url =
-        "/everything?q=${queries.join(",")}&from=$from&to=$to&sortBy=$sortBy&page=$pageNumber&pageSize=${Constants.pageSize}&apiKey=${Constants.apiKey}";
-    var response = await _dio.get(url);
-    int statusCode = (response.statusCode ?? 0);
-    if (statusCode >= 200 && statusCode < 300) {
-      return Future.value([]);
-    } else {
-      return Future.error(response.statusMessage ?? Constants.invalidData);
+    List<Future> webserviceGetList = List.generate(queries.length, (int index) {
+      String url =
+          // "/everything?q=${queries[index]}&from=${DateTime.fromMillisecondsSinceEpoch(from).toIso8601String()}&to=${DateTime.fromMillisecondsSinceEpoch(to).toIso8601String()}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Constants.pageSize}&apiKey=${Constants.apiKey}";
+          "/everything?q=${queries[index]}&from=${from}&to=${to}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Configs.pageSize}&apiKey=${Configs.apiKey}";
+
+      return _getResponse(url);
+    });
+
+    try {
+      List<NewsDataItem> result = [];
+      List responseList = await Future.wait(webserviceGetList);
+      for (int index = 0; index < responseList.length; index++) {
+        var response = (responseList[index] as Response).data;
+        if ((response as Map).containsKey("articles")) {
+          for (var (item as Map) in response["articles"]) {
+            result.add(NewsDataItem.fromMap(item, queries[index]));
+          }
+        }
+      }
+      return Future.value(result);
+    } catch (e) {
+      return Future.error(e);
     }
+  }
+
+  Future<dynamic> _getResponse(String url) {
+    return _dio.get(url);
+  }
+
+  @override
+  Future<void> addNewsListToCache(List<NewsDataItem> items) {
+    throw UnimplementedError();
   }
 }

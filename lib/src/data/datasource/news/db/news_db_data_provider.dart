@@ -1,8 +1,9 @@
 import 'package:flutter_us_news/src/base/base_model.dart';
-import 'package:flutter_us_news/src/data/constants/constants.dart';
+import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
 import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
 import 'package:flutter_us_news/src/data/dto/news/news_item_static.dart';
+import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
@@ -20,7 +21,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
   NewsDbDataProvider._internal(this._database) {
     _database.execute(
         "create table if not exists $tableName ($filedId TEXT PRIMARY KEY,"
-        "$filedTitle TEXT, $filedDescription TEXT, $filedAuthor TEXT, $filedImage TEXT, $filedDate INTEGER, $filedSeen INTEGER)");
+        "$filedTitle TEXT, $filedDescription TEXT, $filedSource TEXT, $filedAuthor TEXT, $filedImage TEXT, $filedDate INTEGER, $filedSeen INTEGER)");
   }
 
   Future<NewsDataItem> createOrUpdateNews(NewsDataItem news) async {
@@ -44,7 +45,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
         where: "$filedId = ?",
         whereArgs: [newsID],
         limit: 1);
-    return list.isEmpty ? null : NewsDataItem.fromMap(list[0]);
+    return list.isEmpty ? null : NewsDataItem.fromMap(list[0], "");
   }
 
   @override
@@ -52,7 +53,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       {required int from,
       required int to,
       required List<String> queries,
-      required String sortBy,
+      required SortBy sortBy,
       required int pageNumber}) async {
     List<NewsDataItem> result = [];
     List<Map> list = await _database.query(
@@ -60,13 +61,18 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       columns: NewsDataItem.empty().toMap().keys.toList(),
       where: "$filedId > ? and $filedId < ? ",
       whereArgs: [from, to],
-      limit: Constants.pageSize,
+      limit: Configs.pageSize,
       offset: pageNumber,
       orderBy: "$filedId ASC",
     );
     for (var items in list) {
-      result.add(NewsDataItem.fromMap(items));
+      result.add(NewsDataItem.fromMap(items, ""));
     }
     return result;
+  }
+
+  @override
+  Future<void> addNewsListToCache(List<NewsDataItem> news) {
+    return createOrUpdateNewsList(news);
   }
 }
