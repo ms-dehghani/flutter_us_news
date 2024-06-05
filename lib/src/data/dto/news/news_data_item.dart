@@ -6,6 +6,7 @@ class NewsDataItem {
   final String description;
   final String author;
   final String image;
+  final String source;
   final int date;
   final bool seen;
 
@@ -15,6 +16,7 @@ class NewsDataItem {
       required this.id,
       required this.description,
       required this.author,
+      required this.source,
       required this.seen,
       required this.date});
 
@@ -23,16 +25,18 @@ class NewsDataItem {
         title = "",
         description = "",
         author = "",
+        source = "",
         image = "",
         date = 0,
         seen = false;
 
-  NewsDataItem.fromMap(Map data)
+  NewsDataItem.fromMap(Map data, String source)
       : id = data[filedId] ?? "",
         title = data[filedTitle] ?? "",
         description = data[filedDescription] ?? "",
         image = data[filedImage] ?? "",
         author = data[filedAuthor] ?? "",
+        source = source.isNotEmpty ? source : data[filedSource] ?? source,
         date = data[filedDate] ?? 0,
         seen = (data[filedSeen] ?? 1) == 1 ? true : false;
 
@@ -41,6 +45,7 @@ class NewsDataItem {
       String? description,
       String? id,
       String? author,
+      String? source,
       String? image,
       bool? seen,
       int? date}) {
@@ -49,6 +54,7 @@ class NewsDataItem {
         title: title ?? this.title,
         author: author ?? this.author,
         date: date ?? this.date,
+        source: source ?? this.source,
         description: description ?? this.description,
         seen: seen ?? this.seen,
         image: image ?? this.image);
@@ -60,6 +66,7 @@ class NewsDataItem {
       filedTitle: title,
       filedDescription: description,
       filedAuthor: author,
+      filedSource: source,
       filedImage: image,
       filedDate: date,
       filedSeen: seen ? 1 : 0,

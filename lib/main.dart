@@ -5,6 +5,7 @@ import 'package:flutter_us_news/res/string/texts.dart';
 import 'package:flutter_us_news/src/app/di/di.dart';
 import 'package:flutter_us_news/src/app/ui/pages/splash/splash_screen.dart';
 import 'package:flutter_us_news/src/base/navigation_service.dart';
+import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 import 'package:flutter_us_news/src/utils/ht/html.dart';
 
 import 'applic.dart';
@@ -40,6 +41,13 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> initDI() async {
     await DI.instance().provideDependencies();
+    await DI.instance().getNewsApiDataProvider().getNewsList(
+        from: DateTime.timestamp().millisecondsSinceEpoch -
+            Duration(days: 1).inMilliseconds,
+        to: DateTime.timestamp().millisecondsSinceEpoch,
+        queries: ["Microsoft", "Apple"],
+        sortBy: SortBy.publishedDate,
+        pageNumber: 1);
     return Future.value();
   }
 

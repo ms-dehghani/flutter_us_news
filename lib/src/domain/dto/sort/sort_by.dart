@@ -1,5 +1,7 @@
 enum SortBy {
-  publishedDate("publishedAt");
+  publishedDate("publishedAt"),
+  popularity("popularity"),
+  relevancy("relevancy");
 
   final String value;
 

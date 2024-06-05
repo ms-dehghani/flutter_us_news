@@ -9,18 +9,19 @@ class NewsListUseCase {
     _repository = repository;
   }
 
-  Future<NewsItem> invoke({
-    required int from,
-    required int to,
-    required List<String> queries,
-    required SortBy sortBy,
-    int pageNumber = 1,
-  }) {
+  Future<List<NewsItem>> invoke(
+      {required int from,
+      required int to,
+      required List<String> queries,
+      required SortBy sortBy,
+      int pageNumber = 1,
+      bool forceRefresh = false}) {
     return _repository.getNewsList(
         from: from,
         pageNumber: pageNumber,
         queries: queries,
         sortBy: sortBy,
+        forceRefresh: forceRefresh,
         to: to);
   }
 }
