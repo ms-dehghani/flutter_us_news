@@ -60,6 +60,11 @@ class NewsRepositoryImpl implements NewsItemRepository, NewsListRepository {
     for (var item in newsList) {
       result.add(NewsDataItemMapNewsItem.map(item));
     }
-    return Future.value(result);
+    return Future.value(_sortBySourceAndDate(queries, result));
+  }
+
+  List<NewsItem> _sortBySourceAndDate(
+      List<String> sortPriority, List<NewsItem> items) {
+    return items;
   }
 }

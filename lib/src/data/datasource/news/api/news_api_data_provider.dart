@@ -1,13 +1,14 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
+import 'package:flutter_us_news/src/data/datasource/webservice/web_service.dart';
 import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 
 class NewsApiDataProvider extends NewsDataProvider {
-  final Dio _dio;
+  final WebService _webService;
 
-  NewsApiDataProvider(this._dio);
+  NewsApiDataProvider(this._webService);
 
   @override
   Future<NewsDataItem?> getNewsDetail(String newsID) {
@@ -22,11 +23,15 @@ class NewsApiDataProvider extends NewsDataProvider {
       required SortBy sortBy,
       required int pageNumber}) async {
     List<Future> webserviceGetList = List.generate(queries.length, (int index) {
-      String url =
-          // "/everything?q=${queries[index]}&from=${DateTime.fromMillisecondsSinceEpoch(from).toIso8601String()}&to=${DateTime.fromMillisecondsSinceEpoch(to).toIso8601String()}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Constants.pageSize}&apiKey=${Constants.apiKey}";
-          "/everything?q=${queries[index]}&from=${from}&to=${to}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Configs.pageSize}&apiKey=${Configs.apiKey}";
+      String url = "/everything?q=${queries[index]}"
+          "&from=${DateTime.fromMillisecondsSinceEpoch(from).toIso8601String()}"
+          "&to=${DateTime.fromMillisecondsSinceEpoch(to).toIso8601String()}"
+          "&sortBy=${sortBy.value}"
+          "&page=$pageNumber"
+          "&pageSize=${Configs.pageSize}";
+      // "/everything?q=${queries[index]}&from=${from}&to=${to}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Configs.pageSize}&apiKey=${Configs.apiKey}";
 
-      return _getResponse(url);
+      return _webService.get(url);
     });
 
     try {
@@ -44,10 +49,6 @@ class NewsApiDataProvider extends NewsDataProvider {
     } catch (e) {
       return Future.error(e);
     }
-  }
-
-  Future<dynamic> _getResponse(String url) {
-    return _dio.get(url);
   }
 
   @override
