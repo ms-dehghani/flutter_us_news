@@ -5,6 +5,7 @@ import 'package:flutter_us_news/src/data/datasource/cache/cache_validate_data_pr
 import 'package:flutter_us_news/src/data/datasource/cache/cache_validate_data_provider_impl.dart';
 import 'package:flutter_us_news/src/data/datasource/news/api/news_api_data_provider.dart';
 import 'package:flutter_us_news/src/data/datasource/news/db/news_db_data_provider.dart';
+import 'package:flutter_us_news/src/data/datasource/webservice/web_service.dart';
 import 'package:flutter_us_news/src/data/repositories/news/news_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
@@ -15,6 +16,7 @@ class DataDI implements BaseDi {
   @override
   Future<void> provideDependencies() async {
     _provideDio();
+    _provideWebService();
     await _provideDatabase();
     _provideCacheValidatorRepository();
     _provideNewsRepository();
@@ -29,6 +31,10 @@ class DataDI implements BaseDi {
         connectTimeout: timeOut));
 
     getIt.registerSingleton<Dio>(dio);
+  }
+
+  void _provideWebService() {
+    getIt.registerSingleton<WebService>(WebService(getIt()));
   }
 
   Future<void> _provideDatabase() async {
