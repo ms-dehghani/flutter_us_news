@@ -3,19 +3,19 @@ import 'package:flutter/widgets.dart';
 import 'insets.dart';
 
 class Corners {
-  static const double small = 3;
+  static const double small = 4;
   static const Radius smallRadius = Radius.circular(small);
   static const BorderRadius smallBorder = BorderRadius.all(smallRadius);
 
-  static const double med = 5;
+  static const double med = 8;
   static const Radius medRadius = Radius.circular(med);
   static const BorderRadius medBorder = BorderRadius.all(medRadius);
 
-  static const double large = 8;
+  static const double large = 12;
   static const Radius largeRadius = Radius.circular(large);
   static const BorderRadius largeBorder = BorderRadius.all(largeRadius);
 
-  static const double xLarge = 12;
+  static const double xLarge = 16;
   static const Radius xLargeRadius = Radius.circular(xLarge);
   static const BorderRadius xLargeBorder = BorderRadius.all(xLargeRadius);
   static const BorderRadius xLargeTopBorder =

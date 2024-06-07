@@ -19,4 +19,17 @@ class Drawable {
 
   static BoxDecoration itemDetailDecoration =
       BoxDecoration(color: UiColors.itemFillColor, boxShadow: Shadows.small);
+
+  static BoxDecoration newsListItemDecoration = BoxDecoration(
+      color: UiColors.itemFillColor,
+      borderRadius: Corners.xLargeBorder,
+      boxShadow: Shadows.small);
+
+  static BoxDecoration trendListItemDecoration =
+      const BoxDecoration(borderRadius: Corners.xxLargeBorder);
+
+  static BoxDecoration backButtonDecoration() => BoxDecoration(
+      color: UiColors.pageBackground,
+      borderRadius: Corners.largeBorder,
+      border: Border.all(color: UiColors.borderColor, width: Strokes.thin));
 }
