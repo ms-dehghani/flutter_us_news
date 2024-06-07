@@ -16,6 +16,16 @@ class NewsRepositoryImpl implements NewsItemRepository, NewsListRepository {
 
   @override
   Future<NewsItem> getNewsDetail(String newsID) async {
+    return Future.value(NewsItem(
+        title: "title",
+        image:
+            "https://st.depositphotos.com/2274151/4841/i/450/depositphotos_48410095-stock-photo-sample-blue-square-grungy-stamp.jpg",
+        description: "description",
+        author: "author",
+        date: 0,
+        id: 's',
+        source: 's',
+        seen: false));
     var cacheItem = await localDB.getNewsDetail(newsID);
     if (cacheItem != null) {
       return Future.value(NewsDataItemMapNewsItem.map(cacheItem));

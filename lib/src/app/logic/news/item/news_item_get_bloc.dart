@@ -19,9 +19,9 @@ class NewsItemGetBloc extends Bloc<GetNewsItemEvent, NewsItemGetBlocPageData> {
     emit.call(state.copyWith(status: PageStatus.loading));
 
     var result = _newsItemUseCase.invoke(event.newsItemID);
-    result.then(
+    await result.then(
       (value) {
-        emit.call(state.copyWith(newsItem: value, status: PageStatus.failure));
+        emit.call(state.copyWith(newsItem: value, status: PageStatus.success));
       },
     ).catchError((e) {
       emit.call(state.copyWith(newsItem: null, status: PageStatus.failure));

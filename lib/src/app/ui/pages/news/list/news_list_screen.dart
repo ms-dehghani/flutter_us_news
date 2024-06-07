@@ -12,6 +12,7 @@ import 'package:flutter_us_news/src/app/logic/news/list/news_list_event.dart';
 import 'package:flutter_us_news/src/app/logic/news/list/news_list_page_data.dart';
 import 'package:flutter_us_news/src/app/ui/pages/empty/empty_screen.dart';
 import 'package:flutter_us_news/src/app/ui/pages/error/error_screen.dart';
+import 'package:flutter_us_news/src/app/ui/pages/news/item/news_item_screen.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/base/widget_view_template.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/items/list/news/news_list_item_view.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/items/list/trends/trend_list_item_view.dart';
@@ -20,6 +21,7 @@ import 'package:flutter_us_news/src/domain/dto/news/news_item.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 import 'package:flutter_us_news/src/domain/dto/trend/trend_item.dart';
 import 'package:flutter_us_news/src/utils/extensions/translates_string_extensions.dart';
+import 'package:flutter_us_news/src/utils/navigator.dart';
 
 class NewsListScreen extends StatefulWidget {
   const NewsListScreen({super.key});
@@ -40,8 +42,6 @@ class _NewsListScreenState extends State<NewsListScreen>
 
   late int todayTimeStamp;
   late int yesterdayTimeStamp;
-
-  int pageNumber = 1;
 
   @override
   void initState() {
@@ -186,7 +186,9 @@ class _NewsListScreenState extends State<NewsListScreen>
             padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
             child: NewsListItemView(
               item: items[index],
-              onTap: (item) {},
+              onTap: (item) {
+                navigateToPage(context, NewsItemScreen(newsID: item.id));
+              },
             ),
           );
         } else {
