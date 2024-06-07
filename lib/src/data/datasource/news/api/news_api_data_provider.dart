@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
 import 'package:flutter_us_news/src/data/datasource/webservice/web_service.dart';
@@ -38,7 +37,7 @@ class NewsApiDataProvider extends NewsDataProvider {
       List<NewsDataItem> result = [];
       List responseList = await Future.wait(webserviceGetList);
       for (int index = 0; index < responseList.length; index++) {
-        var response = (responseList[index] as Response).data;
+        var response = responseList[index];
         if ((response as Map).containsKey("articles")) {
           for (var (item as Map) in response["articles"]) {
             result.add(NewsDataItem.fromMap(item, queries[index]));

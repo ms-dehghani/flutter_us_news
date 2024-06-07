@@ -17,6 +17,11 @@ class ItemSplitter {
     height: Insets.lg,
   );
 
+  static Widget ultraThickSplitter = SizedBox(
+    width: Insets.d24,
+    height: Insets.d24,
+  );
+
   static Widget medSplitter = SizedBox(
     width: Insets.med,
     height: Insets.med,

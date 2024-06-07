@@ -21,14 +21,6 @@ class Insets {
 
   static double get backButtonHeight => 38 * scale;
 
-  static double get taskRowItemMinHeight => 100 * scale;
-
-  static double get calenderItemHeight => 72 * scale;
-
-  static double get calenderItemWidth => 48 * scale;
-
-  static double get calenderListInTaskHeight => 144 * scale;
-
   static double get emptyImageSize => 300 * scale;
 
   static double get appBarHeight => 64 * scale;
@@ -49,4 +41,9 @@ class Insets {
   static double get iconSizeXL => 24 * scale;
 
   static double get iconSize2XL => 32 * scale;
+
+  static double get newsListItemIcon => 96 * scale;
+
+  static double get trendListItemWidth => 124 * scale;
+  static double get trendListItemHeight => 164 * scale;
 }

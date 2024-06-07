@@ -38,27 +38,40 @@ class NewsRepositoryImpl implements NewsItemRepository, NewsListRepository {
       required int pageNumber,
       bool forceRefresh = false}) async {
     List<NewsItem> result = [];
-    var isCacheValid = await cacheValidate.isCacheValid();
-    if (!isCacheValid || forceRefresh) {
-      var newsApiList = await api.getNewsList(
-          from: from,
-          to: to,
-          queries: queries,
-          sortBy: sortBy,
-          pageNumber: pageNumber);
-      await localDB.addNewsListToCache(newsApiList);
-      await cacheValidate
-          .updateCacheTime(DateTime.now().millisecondsSinceEpoch);
-    }
-
-    var newsList = await localDB.getNewsList(
-        from: from,
-        to: to,
-        queries: queries,
-        sortBy: sortBy,
-        pageNumber: pageNumber);
-    for (var item in newsList) {
-      result.add(NewsDataItemMapNewsItem.map(item));
+    // var isCacheValid = await cacheValidate.isCacheValid();
+    // if (!isCacheValid || forceRefresh) {
+    //   var newsApiList = await api.getNewsList(
+    //       from: from,
+    //       to: to,
+    //       queries: queries,
+    //       sortBy: sortBy,
+    //       pageNumber: pageNumber);
+    //   await localDB.addNewsListToCache(newsApiList);
+    //   await cacheValidate
+    //       .updateCacheTime(DateTime.now().millisecondsSinceEpoch);
+    // }
+    //
+    // var newsList = await localDB.getNewsList(
+    //     from: from,
+    //     to: to,
+    //     queries: queries,
+    //     sortBy: sortBy,
+    //     pageNumber: pageNumber);
+    // for (var item in newsList) {
+    //   result.add(NewsDataItemMapNewsItem.map(item));
+    // }
+    await Future.delayed(Duration(seconds: 2));
+    for (int i = 0; i < 20; i++) {
+      result.add(NewsItem(
+          title: "$pageNumber$i",
+          image:
+              "https://st.depositphotos.com/2274151/4841/i/450/depositphotos_48410095-stock-photo-sample-blue-square-grungy-stamp.jpg",
+          description: "description",
+          author: "author",
+          date: 0,
+          id: 's',
+          source: 's',
+          seen: false));
     }
     return Future.value(_sortBySourceAndDate(queries, result));
   }
