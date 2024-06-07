@@ -32,8 +32,9 @@ class _NewsListScreenState extends State<NewsListScreen>
     with WidgetViewTemplate {
   final _listScrollController = ScrollController();
 
-  final NewsListBloc _newsListBloc =
-      NewsListBloc(newsListUseCase: DI.instance().getNewsListUseCase());
+  final NewsListBloc _newsListBloc = NewsListBloc(
+      newsListUseCase: DI.instance().getNewsListUseCase(),
+      trendListUseCase: DI.instance().getTrendListUseCase());
 
   final queries = ["Microsoft", "Apple", "Google", "Tesla"];
 
@@ -150,29 +151,6 @@ class _NewsListScreenState extends State<NewsListScreen>
   }
 
   Widget _trendList(List<TrendItem> trendList) {
-    List<TrendItem> items = [];
-    if (trendList.isEmpty) {
-      items.add(TrendItem(
-          id: "",
-          image:
-              "https://st.depositphotos.com/2274151/4841/i/450/depositphotos_48410095-stock-photo-sample-blue-square-grungy-stamp.jpg",
-          title: "aa"));
-      items.add(TrendItem(
-          id: "",
-          image:
-              "https://cdn.pixabay.com/photo/2023/08/02/18/21/yoga-8165759_640.jpg",
-          title: "sss"));
-      items.add(TrendItem(
-          id: "",
-          image:
-              "https://cdn.pixabay.com/photo/2023/08/02/18/21/yoga-8165759_640.jpg",
-          title: "sss"));
-      items.add(TrendItem(
-          id: "",
-          image:
-              "https://cdn.pixabay.com/photo/2023/08/02/18/21/yoga-8165759_640.jpg",
-          title: "sss"));
-    }
     return Column(
       children: [
         SizedBox(
@@ -183,14 +161,15 @@ class _NewsListScreenState extends State<NewsListScreen>
               return Padding(
                 padding: EdgeInsets.only(
                     left: index == 0 ? Insets.pagePadding : Insets.med,
-                    right: index < items.length - 1 ? 0 : Insets.pagePadding),
+                    right:
+                        index < trendList.length - 1 ? 0 : Insets.pagePadding),
                 child: TrendListItemView(
-                  item: items[index],
+                  item: trendList[index],
                   onTap: (item) {},
                 ),
               );
             },
-            itemCount: items.length,
+            itemCount: trendList.length,
           ),
         ),
       ],

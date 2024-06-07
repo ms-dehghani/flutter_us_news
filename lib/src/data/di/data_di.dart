@@ -7,6 +7,7 @@ import 'package:flutter_us_news/src/data/datasource/news/api/news_api_data_provi
 import 'package:flutter_us_news/src/data/datasource/news/db/news_db_data_provider.dart';
 import 'package:flutter_us_news/src/data/datasource/webservice/web_service.dart';
 import 'package:flutter_us_news/src/data/repositories/news/news_repository_impl.dart';
+import 'package:flutter_us_news/src/data/repositories/trend/trend_repository_impl.dart';
 import 'package:get_it/get_it.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -20,6 +21,7 @@ class DataDI implements BaseDi {
     await _provideDatabase();
     _provideCacheValidatorRepository();
     _provideNewsRepository();
+    _provideTrendRepository();
   }
 
   void _provideDio() {
@@ -58,5 +60,9 @@ class DataDI implements BaseDi {
         NewsRepositoryImpl(newsDbDataProvider, newsApiDataProvider, getIt());
 
     getIt.registerSingleton<NewsRepositoryImpl>(newsRepositoryImpl);
+  }
+
+  void _provideTrendRepository() {
+    getIt.registerSingleton<TrendRepositoryImpl>(TrendRepositoryImpl());
   }
 }
