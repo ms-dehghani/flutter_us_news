@@ -6,7 +6,7 @@ import '../../base/parent_page_data.dart';
 class NewsItemGetBlocPageData extends ParentPageData {
   NewsItem? newsItem;
 
-  NewsItemGetBlocPageData({this.newsItem = null, required PageStatus status})
+  NewsItemGetBlocPageData({this.newsItem, required PageStatus status})
       : super(pageStatus: status);
 
   NewsItemGetBlocPageData copyWith({
