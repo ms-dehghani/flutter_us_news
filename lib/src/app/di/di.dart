@@ -3,6 +3,7 @@ import 'package:flutter_us_news/src/data/datasource/news/api/news_api_data_provi
 import 'package:flutter_us_news/src/data/di/data_di.dart';
 import 'package:flutter_us_news/src/domain/di/domain_di.dart';
 import 'package:flutter_us_news/src/domain/uscases/news/list/news_list_usecase.dart';
+import 'package:flutter_us_news/src/domain/uscases/trend/list/trend_list_usecase.dart';
 import 'package:get_it/get_it.dart';
 
 class DI implements BaseDi {
@@ -29,5 +30,9 @@ class DI implements BaseDi {
 
   NewsListUseCase getNewsListUseCase() {
     return getIt<NewsListUseCase>();
+  }
+
+  TrendListUseCase getTrendListUseCase() {
+    return getIt<TrendListUseCase>();
   }
 }
