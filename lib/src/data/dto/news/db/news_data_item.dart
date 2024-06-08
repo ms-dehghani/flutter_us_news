@@ -7,6 +7,7 @@ class NewsDataItem {
   final String author;
   final String image;
   final String source;
+  final String url;
   final int date;
 
   NewsDataItem(
@@ -16,6 +17,7 @@ class NewsDataItem {
       required this.description,
       required this.author,
       required this.source,
+      required this.url,
       required this.date});
 
   NewsDataItem.empty()
@@ -24,6 +26,7 @@ class NewsDataItem {
         description = "",
         author = "",
         source = "",
+        url = "",
         image = "",
         date = 0;
 
@@ -33,6 +36,7 @@ class NewsDataItem {
         description = data[filedDescription] ?? "",
         image = data[filedImage] ?? "",
         author = data[filedAuthor] ?? "",
+        url = data[filedUrl] ?? "",
         source = source.isNotEmpty ? source : data[filedSource] ?? source,
         date = data[filedDate] ?? 0;
 
@@ -42,6 +46,7 @@ class NewsDataItem {
       int? id,
       String? author,
       String? source,
+      String? url,
       String? image,
       int? date}) {
     return NewsDataItem(
@@ -50,6 +55,7 @@ class NewsDataItem {
         author: author ?? this.author,
         date: date ?? this.date,
         source: source ?? this.source,
+        url: url ?? this.url,
         description: description ?? this.description,
         image: image ?? this.image);
   }
@@ -61,6 +67,7 @@ class NewsDataItem {
       filedDescription: description,
       filedAuthor: author,
       filedSource: source,
+      filedUrl: url,
       filedImage: image,
       filedDate: date
     };

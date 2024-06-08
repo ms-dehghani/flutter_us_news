@@ -7,6 +7,7 @@ class NewsItem extends Equatable {
   final String author;
   final String image;
   final String source;
+  final String url;
   final int date;
 
   NewsItem(
@@ -15,6 +16,7 @@ class NewsItem extends Equatable {
       required this.id,
       required this.description,
       required this.author,
+      required this.url,
       required this.source,
       required this.date});
 
@@ -23,6 +25,7 @@ class NewsItem extends Equatable {
         title = "",
         description = "",
         author = "",
+        url = "",
         source = "",
         image = "",
         date = 0;
@@ -34,6 +37,7 @@ class NewsItem extends Equatable {
       String? author,
       String? source,
       String? image,
+      String? url,
       int? date}) {
     return NewsItem(
         id: id ?? this.id,
@@ -41,6 +45,7 @@ class NewsItem extends Equatable {
         author: author ?? this.author,
         date: date ?? this.date,
         source: source ?? this.source,
+        url: url ?? this.url,
         description: description ?? this.description,
         image: image ?? this.image);
   }
