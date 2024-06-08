@@ -82,52 +82,53 @@ class _NewsItemScreenState extends State<NewsItemScreen>
   }
 
   Widget _newsDetailView(NewsItem newsItem) {
-    return Container(
-      color: UiColors.pageBackground,
-      padding: EdgeInsets.symmetric(
-        horizontal: Insets.pagePadding,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Stack(
-            children: [
-              NetworkImageView(
-                image: newsItem.image,
-                size: Size(getWidth(context), getHeight(context) / 4),
-                borderRadius: 0,
-              ),
-              Padding(
-                padding: EdgeInsets.only(top: Insets.pagePadding),
-                child: AppBarBackButton(
-                  onTap: () {
-                    Navigator.of(context).maybePop();
-                  },
-                ),
-              ),
-            ],
-          ),
-          Expanded(
-            child: ListView(
+    return SafeArea(
+      child: Container(
+        color: UiColors.pageBackground,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Stack(
               children: [
-                ItemSplitter.ultraThickSplitter,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _sourceItemView(newsItem),
-                    _dateItemView(newsItem)
-                  ],
+                NetworkImageView(
+                  image: newsItem.image,
+                  size: Size(getWidth(context), getHeight(context) / 4),
+                  borderRadius: 0,
                 ),
-                ItemSplitter.thinSplitter,
-                _titleItemView(newsItem),
-                ItemSplitter.thinSplitter,
-                _descriptionItemView(newsItem),
-                ItemSplitter.thinSplitter,
+                Padding(
+                  padding: EdgeInsets.only(
+                      top: Insets.pagePadding, left: Insets.pagePadding),
+                  child: AppBarBackButton(
+                    onTap: () {
+                      Navigator.of(context).maybePop();
+                    },
+                  ),
+                ),
               ],
             ),
-          )
-        ],
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
+                children: [
+                  ItemSplitter.ultraThickSplitter,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _sourceItemView(newsItem),
+                      _dateItemView(newsItem)
+                    ],
+                  ),
+                  ItemSplitter.thinSplitter,
+                  _titleItemView(newsItem),
+                  ItemSplitter.thinSplitter,
+                  _descriptionItemView(newsItem),
+                  ItemSplitter.thinSplitter,
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

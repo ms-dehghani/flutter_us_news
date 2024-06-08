@@ -1,7 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_us_news/res/color/ui_colors.dart';
 import 'package:flutter_us_news/res/dimens/insets.dart';
+import 'package:flutter_us_news/res/drawable/app_icons.dart';
+import 'package:flutter_us_news/res/drawable/drawable.dart';
 import 'package:flutter_us_news/res/drawable/item_splitter.dart';
 import 'package:flutter_us_news/res/string/texts.dart';
 import 'package:flutter_us_news/res/styles/text_style.dart';
@@ -14,12 +17,14 @@ import 'package:flutter_us_news/src/app/ui/pages/empty/empty_screen.dart';
 import 'package:flutter_us_news/src/app/ui/pages/error/error_screen.dart';
 import 'package:flutter_us_news/src/app/ui/pages/news/item/news_item_screen.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/base/widget_view_template.dart';
+import 'package:flutter_us_news/src/app/ui/widgets/image/image_view.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/items/list/news/news_list_item_view.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/items/list/trends/trend_list_item_view.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/progress/in_page_progress.dart';
 import 'package:flutter_us_news/src/domain/dto/news/news_item.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 import 'package:flutter_us_news/src/domain/dto/trend/trend_item.dart';
+import 'package:flutter_us_news/src/utils/device.dart';
 import 'package:flutter_us_news/src/utils/extensions/translates_string_extensions.dart';
 import 'package:flutter_us_news/src/utils/navigator.dart';
 
@@ -84,6 +89,37 @@ class _NewsListScreenState extends State<NewsListScreen>
     );
   }
 
+  Widget _searchView() {
+    return Container(
+      height: Insets.searchViewHeight,
+      width: getWidth(context) - Insets.med * 2,
+      margin: EdgeInsets.symmetric(vertical: Insets.med),
+      padding: EdgeInsets.all(Insets.xs),
+      decoration: Drawable.searchEdittextDecoration,
+      child: CupertinoTextField(
+        padding: EdgeInsets.only(
+          left: Insets.sm,
+          right: Insets.sm,
+        ),
+        showCursor: true,
+        placeholder: Texts.searchHint.translate,
+        maxLines: 1,
+        cursorColor: UiColors.primaryText,
+        suffix: Padding(
+          padding: EdgeInsets.symmetric(horizontal: Insets.med),
+          child: ImageView(
+            src: AppIcons.searchIcon,
+            size: Insets.d24,
+            color: UiColors.primaryText,
+          ),
+        ),
+        placeholderStyle: TextStyles.h3.copyWith(color: UiColors.secondaryText),
+        style: TextStyles.h3.copyWith(color: UiColors.primaryText),
+        decoration: Drawable.searchEdittextDecoration,
+      ),
+    );
+  }
+
   Widget _page(NewsListBlocPageData state) {
     if (state.pageStatus == PageStatus.loading) {
       if (state.newsList.isNotEmpty) {
@@ -109,44 +145,53 @@ class _NewsListScreenState extends State<NewsListScreen>
 
   Widget _pageList(
       List<TrendItem> trendList, List<NewsItem> items, bool showLoading) {
-    return RefreshIndicator(
-      onRefresh: () {
-        _reload();
-        return Future.value();
-      },
-      child: ListView(
-        controller: _listScrollController,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(Insets.pagePadding),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        _searchView(),
+        Expanded(
+          child: RefreshIndicator(
+            onRefresh: () {
+              _reload();
+              return Future.value();
+            },
+            child: ListView(
+              controller: _listScrollController,
               children: [
-                Text(
-                  Texts.walkWithTrends.translate,
-                  style:
-                      TextStyles.h1Bold.copyWith(color: UiColors.primaryText),
+                Padding(
+                  padding: EdgeInsets.all(Insets.pagePadding),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        Texts.walkWithTrends.translate,
+                        style: TextStyles.h1Bold
+                            .copyWith(color: UiColors.primaryText),
+                      ),
+                      Text(
+                        Texts.walkWithTrendsDesc.translate,
+                        style: TextStyles.h2
+                            .copyWith(color: UiColors.secondaryText),
+                      ),
+                    ],
+                  ),
                 ),
-                Text(
-                  Texts.walkWithTrendsDesc.translate,
-                  style: TextStyles.h2.copyWith(color: UiColors.secondaryText),
+                _trendList(trendList),
+                ItemSplitter.ultraThickSplitter,
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
+                  child: Text(
+                    Texts.topReadsOfTheDay.translate,
+                    style:
+                        TextStyles.h1Bold.copyWith(color: UiColors.primaryText),
+                  ),
                 ),
+                _newsList(items, showLoading)
               ],
             ),
           ),
-          _trendList(trendList),
-          ItemSplitter.ultraThickSplitter,
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
-            child: Text(
-              Texts.topReadsOfTheDay.translate,
-              style: TextStyles.h1Bold.copyWith(color: UiColors.primaryText),
-            ),
-          ),
-          _newsList(items, showLoading)
-        ],
-      ),
+        ),
+      ],
     );
   }
 

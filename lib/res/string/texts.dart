@@ -10,6 +10,8 @@ class Texts {
   static const String walkWithTrends = "walkWithTrends";
   static const String walkWithTrendsDesc = "walkWithTrendsDesc";
 
+  static const String searchHint = "searchHint";
+
   static const List<String> monthName = [
     "month1",
     "month2",
