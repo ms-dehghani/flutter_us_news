@@ -8,7 +8,6 @@ class NewsItem extends Equatable {
   final String image;
   final String source;
   final int date;
-  final bool seen;
 
   NewsItem(
       {required this.title,
@@ -17,7 +16,6 @@ class NewsItem extends Equatable {
       required this.description,
       required this.author,
       required this.source,
-      required this.seen,
       required this.date});
 
   NewsItem.empty()
@@ -27,8 +25,7 @@ class NewsItem extends Equatable {
         author = "",
         source = "",
         image = "",
-        date = 0,
-        seen = false;
+        date = 0;
 
   NewsItem copyWith(
       {String? title,
@@ -37,7 +34,6 @@ class NewsItem extends Equatable {
       String? author,
       String? source,
       String? image,
-      bool? seen,
       int? date}) {
     return NewsItem(
         id: id ?? this.id,
@@ -46,7 +42,6 @@ class NewsItem extends Equatable {
         date: date ?? this.date,
         source: source ?? this.source,
         description: description ?? this.description,
-        seen: seen ?? this.seen,
         image: image ?? this.image);
   }
 

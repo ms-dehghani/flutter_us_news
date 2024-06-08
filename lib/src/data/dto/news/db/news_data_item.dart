@@ -1,14 +1,13 @@
-import 'package:flutter_us_news/src/data/dto/news/news_item_static.dart';
+import 'news_item_static.dart';
 
 class NewsDataItem {
-  String id;
+  int id;
   final String title;
   final String description;
   final String author;
   final String image;
   final String source;
   final int date;
-  final bool seen;
 
   NewsDataItem(
       {required this.title,
@@ -17,37 +16,33 @@ class NewsDataItem {
       required this.description,
       required this.author,
       required this.source,
-      required this.seen,
       required this.date});
 
   NewsDataItem.empty()
-      : id = "",
+      : id = 0,
         title = "",
         description = "",
         author = "",
         source = "",
         image = "",
-        date = 0,
-        seen = false;
+        date = 0;
 
   NewsDataItem.fromMap(Map data, String source)
-      : id = data[filedId] ?? "",
+      : id = data[filedId] ?? 0,
         title = data[filedTitle] ?? "",
         description = data[filedDescription] ?? "",
         image = data[filedImage] ?? "",
         author = data[filedAuthor] ?? "",
         source = source.isNotEmpty ? source : data[filedSource] ?? source,
-        date = data[filedDate] ?? 0,
-        seen = (data[filedSeen] ?? 1) == 1 ? true : false;
+        date = data[filedDate] ?? 0;
 
   NewsDataItem copyWith(
       {String? title,
       String? description,
-      String? id,
+      int? id,
       String? author,
       String? source,
       String? image,
-      bool? seen,
       int? date}) {
     return NewsDataItem(
         id: id ?? this.id,
@@ -56,20 +51,18 @@ class NewsDataItem {
         date: date ?? this.date,
         source: source ?? this.source,
         description: description ?? this.description,
-        seen: seen ?? this.seen,
         image: image ?? this.image);
   }
 
   Map<String, Object?> toMap() {
     return {
-      filedId: id,
+      filedId: id == 0 ? null : id,
       filedTitle: title,
       filedDescription: description,
       filedAuthor: author,
       filedSource: source,
       filedImage: image,
-      filedDate: date,
-      filedSeen: seen ? 1 : 0,
+      filedDate: date
     };
   }
 }

@@ -14,14 +14,12 @@ class NewsListUseCase {
       required int to,
       required List<String> queries,
       required SortBy sortBy,
-      int pageNumber = 1,
-      bool forceRefresh = false}) {
+      int pageNumber = 1}) {
     return _repository.getNewsList(
         from: from,
         pageNumber: pageNumber,
         queries: queries,
         sortBy: sortBy,
-        forceRefresh: forceRefresh,
         to: to);
   }
 }

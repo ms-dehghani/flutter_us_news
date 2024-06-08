@@ -44,7 +44,7 @@ class Insets {
 
   static double get iconSize2XL => 32 * scale;
 
-  static double get newsListItemIcon => 86 * scale;
+  static double get newsListItemIcon => 90 * scale;
 
   static double get trendListItemWidth => 136 * scale;
   static double get trendListItemHeight => 164 * scale;

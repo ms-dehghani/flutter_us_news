@@ -1,7 +1,9 @@
 import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
 import 'package:flutter_us_news/src/data/datasource/webservice/web_service.dart';
-import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
+import 'package:flutter_us_news/src/data/dto/news/api/news_api_data_item.dart';
+import 'package:flutter_us_news/src/data/dto/news/api/news_api_data_item_map_news_data_item.dart';
+import 'package:flutter_us_news/src/data/dto/news/db/news_data_item.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 
 class NewsApiDataProvider extends NewsDataProvider {
@@ -28,7 +30,6 @@ class NewsApiDataProvider extends NewsDataProvider {
           "&sortBy=${sortBy.value}"
           "&page=$pageNumber"
           "&pageSize=${Configs.pageSize}";
-      // "/everything?q=${queries[index]}&from=${from}&to=${to}&sortBy=${sortBy.value}&page=$pageNumber&pageSize=${Configs.pageSize}&apiKey=${Configs.apiKey}";
 
       return _webService.get(url);
     });
@@ -39,8 +40,11 @@ class NewsApiDataProvider extends NewsDataProvider {
       for (int index = 0; index < responseList.length; index++) {
         var response = responseList[index];
         if ((response as Map).containsKey("articles")) {
-          for (var (item as Map) in response["articles"]) {
-            result.add(NewsDataItem.fromMap(item, queries[index]));
+          for (var (item as Map<String, dynamic>) in response["articles"]) {
+            try {
+              result.add(NewsApiDataItemMapNewsDataItem.map(
+                  NewsApiDataItem.fromJson(item), queries[index]));
+            } catch (e) {}
           }
         }
       }

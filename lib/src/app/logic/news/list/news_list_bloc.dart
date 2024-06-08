@@ -35,8 +35,7 @@ class NewsListBloc extends Bloc<NewsListEvent, NewsListBlocPageData> {
         to: event.to,
         queries: event.queries,
         sortBy: event.sortBy,
-        pageNumber: pageNumber,
-        forceRefresh: false);
+        pageNumber: pageNumber);
 
     await result.then((result) {
       var newList = state.newsList;
@@ -61,8 +60,7 @@ class NewsListBloc extends Bloc<NewsListEvent, NewsListBlocPageData> {
         to: event.to,
         queries: event.queries,
         sortBy: event.sortBy,
-        pageNumber: pageNumber,
-        forceRefresh: true);
+        pageNumber: pageNumber);
 
     await result.then((result) async {
       var trendList = await _trendListUseCase.invoke();
