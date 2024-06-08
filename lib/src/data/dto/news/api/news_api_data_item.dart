@@ -16,6 +16,9 @@ class NewsApiDataItem {
   @JsonKey(name: "urlToImage", defaultValue: "")
   final String? image;
 
+  @JsonKey(name: "url", defaultValue: "")
+  final String? url;
+
   @JsonKey(name: "publishedAt")
   final DateTime date;
 
@@ -24,6 +27,7 @@ class NewsApiDataItem {
       required this.description,
       this.author,
       this.image,
+      this.url,
       required this.date});
 
   factory NewsApiDataItem.fromJson(Map<String, dynamic> json) =>

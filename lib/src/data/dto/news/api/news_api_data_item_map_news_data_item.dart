@@ -9,6 +9,7 @@ class NewsApiDataItemMapNewsDataItem {
         image: item.image ?? "",
         id: 0,
         author: item.author ?? "",
+        url: item.url ?? "",
         date: item.date.millisecondsSinceEpoch,
         description: item.description,
         source: source);

@@ -10,6 +10,7 @@ class NewsDataItemMapNewsItem {
         title: item.title,
         image: item.image,
         id: item.id.toString(),
+        url: item.url,
         source: item.source);
   }
 }

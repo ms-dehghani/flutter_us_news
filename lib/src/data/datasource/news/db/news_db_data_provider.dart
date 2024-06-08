@@ -21,7 +21,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
   NewsDbDataProvider._internal(this._database) {
     _database.execute(
         "create table if not exists $tableName ($filedId INTEGER PRIMARY KEY AUTOINCREMENT,"
-        "$filedTitle TEXT, $filedDescription TEXT, $filedSource TEXT, $filedAuthor TEXT, $filedImage TEXT, $filedDate INTEGER)");
+        "$filedTitle TEXT, $filedDescription TEXT, $filedSource TEXT, $filedAuthor TEXT, $filedUrl TEXT, $filedImage TEXT, $filedDate INTEGER)");
   }
 
   Future<NewsDataItem> createOrUpdateNews(NewsDataItem news) async {
@@ -34,9 +34,9 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
     return news;
   }
 
-  Future<bool> createOrUpdateNewsList(List<NewsDataItem> news) {
+  Future<bool> createOrUpdateNewsList(List<NewsDataItem> news) async {
     for (var element in news) {
-      createOrUpdateNews(element);
+      await createOrUpdateNews(element);
     }
     return Future.value(true);
   }

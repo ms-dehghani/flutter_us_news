@@ -11,6 +11,8 @@ class Texts {
   static const String walkWithTrendsDesc = "walkWithTrendsDesc";
 
   static const String searchHint = "searchHint";
+  static const String by = "by";
+  static const String openFullArticle = "openFullArticle";
 
   static const List<String> monthName = [
     "month1",
