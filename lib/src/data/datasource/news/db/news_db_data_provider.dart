@@ -26,12 +26,13 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
   }
 
   Future<NewsDataItem> createOrUpdateNews(NewsDataItem news) async {
-    var newsByTitle = await getNewsByTitle(news.title);
-    if (newsByTitle == null) {
-      int id = await _database.insert(tableName, news.toMap(),
-          conflictAlgorithm: ConflictAlgorithm.replace);
-      if (news.id == 0) news.id = id;
+    var newsByTitle = await _getNewsByTitle(news.title);
+    if (newsByTitle != null) {
+      news.id = newsByTitle.id;
     }
+    int id = await _database.insert(tableName, news.toMap(),
+        conflictAlgorithm: ConflictAlgorithm.replace);
+    if (news.id == 0) news.id = id;
     return news;
   }
 
@@ -42,7 +43,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
     return Future.value(true);
   }
 
-  Future<NewsDataItem?> getNewsByTitle(String title) async {
+  Future<NewsDataItem?> _getNewsByTitle(String title) async {
     List<Map> list = await _database.query(tableName,
         columns: NewsDataItem.empty().toMap().keys.toList(),
         where: "$filedTitle = ?",
@@ -74,7 +75,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       List<Map> list = await _database.query(
         tableName,
         columns: NewsDataItem.empty().toMap().keys.toList(),
-        where: "$filedDate > ? and $filedDate < ? and $filedSource = ?",
+        where: "$filedDate >= ? and $filedDate <= ? and $filedSource = ?",
         whereArgs: [from, to, queries[index]],
         orderBy: "$filedDate Desc",
         offset: (pageNumber - 1) * Configs.pageSize,
@@ -91,5 +92,9 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
   @override
   Future<void> addNewsListToCache(List<NewsDataItem> news) {
     return createOrUpdateNewsList(news);
+  }
+
+  Future<void> clear() async {
+    await _database.delete(tableName);
   }
 }
