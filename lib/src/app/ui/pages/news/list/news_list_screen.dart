@@ -258,8 +258,6 @@ class _NewsListScreenState extends State<NewsListScreen>
     if (!_listScrollController.hasClients) return false;
     final maxScroll = _listScrollController.position.maxScrollExtent;
     final currentScroll = _listScrollController.offset;
-    print(currentScroll);
-    print(maxScroll);
     return currentScroll >= (maxScroll * 0.9);
   }
 }
