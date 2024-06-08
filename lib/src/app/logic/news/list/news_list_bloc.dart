@@ -38,7 +38,7 @@ class NewsListBloc extends Bloc<NewsListEvent, NewsListBlocPageData> {
         pageNumber: pageNumber);
 
     await result.then((result) {
-      var newList = state.newsList;
+      var newList = state.newsList.toList(growable: true);
       newList.addAll(result);
       emit.call(state.copyWith(newsList: newList, status: PageStatus.success));
     }).catchError((e) {
