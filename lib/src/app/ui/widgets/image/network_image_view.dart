@@ -8,9 +8,14 @@ class NetworkImageView extends StatelessWidget {
   Size size;
   String image;
   double? borderRadius;
+  BoxFit? boxFit;
 
   NetworkImageView(
-      {super.key, required this.image, required this.size, this.borderRadius});
+      {super.key,
+      required this.image,
+      required this.size,
+      this.borderRadius,
+      this.boxFit});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +25,7 @@ class NetworkImageView extends StatelessWidget {
         imageUrl: image,
         width: size.width,
         height: size.height,
-        fit: BoxFit.cover,
+        fit: boxFit ?? BoxFit.cover,
         placeholder: (context, url) {
           return Container(
             width: size.width,
