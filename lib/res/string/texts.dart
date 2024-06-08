@@ -1,5 +1,6 @@
 class Texts {
   static const String appName = "Us News";
+  static const String appVersion = "V 0.0.1";
 
   static const String ok = "ok";
   static const String emptyNewsList = "emptyNewsList";

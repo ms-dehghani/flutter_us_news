@@ -64,7 +64,7 @@ class _MyAppState extends State<MyApp> {
         child: FutureBuilder(
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return SplashScreen();
+              return const SplashScreen();
             } else {
               return Container(
                 width: double.infinity,
