@@ -22,12 +22,7 @@ class NewsRepositoryImpl implements NewsItemRepository, NewsListRepository {
     if (cacheItem != null) {
       return Future.value(NewsDataItemMapNewsItem.map(cacheItem));
     } else {
-      cacheItem = (await api.getNewsDetail(newsID));
-      if (cacheItem != null) {
-        return Future.value(NewsDataItemMapNewsItem.map(cacheItem));
-      } else {
-        return Future.error(Exception(Constants.itemNotFound));
-      }
+      return Future.error(Exception(Constants.itemNotFound));
     }
   }
 
@@ -37,8 +32,7 @@ class NewsRepositoryImpl implements NewsItemRepository, NewsListRepository {
       required int to,
       required List<String> queries,
       required SortBy sortBy,
-      required int pageNumber,
-      String lastNewsId = ""}) async {
+      required int pageNumber}) async {
     List<NewsDataItem> newsList = [];
     List<NewsItem> result = [];
 
