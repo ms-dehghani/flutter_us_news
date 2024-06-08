@@ -9,13 +9,19 @@ List<NewsDataItem> sortBySourceAndDate(
     fullListLength += element.length;
   }
 
-  for (int i = 0; i < fullListLength; i++) {
+  while (result.length < fullListLength) {
+    var findIndex = 0;
+    var maxDataItem = NewsDataItem.empty();
     for (int j = 0; j < queries.length; j++) {
       if (map[queries[j]]!.length > indexList[j]) {
-        result.add(map[queries[j]]![indexList[j]]);
-        indexList[j]++;
+        if (maxDataItem.date < map[queries[j]]![indexList[j]].date) {
+          maxDataItem = map[queries[j]]![indexList[j]];
+          findIndex = j;
+        }
       }
     }
+    result.add(maxDataItem);
+    indexList[findIndex]++;
   }
 
   return result;
