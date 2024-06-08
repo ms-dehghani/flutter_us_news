@@ -43,7 +43,8 @@ class _NewsListScreenState extends State<NewsListScreen>
       newsListUseCase: DI.instance().getNewsListUseCase(),
       trendListUseCase: DI.instance().getTrendListUseCase());
 
-  final queries = ["Microsoft", "Apple", "Google", "Tesla"];
+  // final queries = ["Microsoft", "Apple", "Google", "Tesla"];
+  final queries = ["Microsoft"];
 
   late int todayTimeStamp;
   late int yesterdayTimeStamp;
@@ -296,7 +297,7 @@ class _NewsListScreenState extends State<NewsListScreen>
         .copyWith(hour: 23, minute: 59, second: 59)
         .millisecondsSinceEpoch;
     yesterdayTimeStamp =
-        todayTimeStamp - const Duration(days: 100).inMilliseconds;
+        todayTimeStamp - const Duration(days: 20).inMilliseconds;
   }
 
   bool isReachedToEnd() {

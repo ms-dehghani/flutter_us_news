@@ -1,8 +1,8 @@
 import 'package:flutter_us_news/src/base/base_model.dart';
 import 'package:flutter_us_news/src/configs.dart';
 import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart';
-import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
-import 'package:flutter_us_news/src/data/dto/news/news_item_static.dart';
+import 'package:flutter_us_news/src/data/dto/news/db/news_data_item.dart';
+import 'package:flutter_us_news/src/data/dto/news/db/news_item_static.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -20,14 +20,17 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
 
   NewsDbDataProvider._internal(this._database) {
     _database.execute(
-        "create table if not exists $tableName ($filedId TEXT PRIMARY KEY,"
-        "$filedTitle TEXT, $filedDescription TEXT, $filedSource TEXT, $filedAuthor TEXT, $filedImage TEXT, $filedDate INTEGER, $filedSeen INTEGER)");
+        "create table if not exists $tableName ($filedId INTEGER PRIMARY KEY AUTOINCREMENT,"
+        "$filedTitle TEXT, $filedDescription TEXT, $filedSource TEXT, $filedAuthor TEXT, $filedImage TEXT, $filedDate INTEGER)");
   }
 
   Future<NewsDataItem> createOrUpdateNews(NewsDataItem news) async {
-    int id = await _database.insert(tableName, news.toMap(),
-        conflictAlgorithm: ConflictAlgorithm.replace);
-    if (news.id.isEmpty) news.id = id.toString();
+    var newsByTitle = await getNewsByTitle(news.title);
+    if (newsByTitle == null) {
+      int id = await _database.insert(tableName, news.toMap(),
+          conflictAlgorithm: ConflictAlgorithm.replace);
+      if (news.id == 0) news.id = id;
+    }
     return news;
   }
 
@@ -36,6 +39,15 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       createOrUpdateNews(element);
     }
     return Future.value(true);
+  }
+
+  Future<NewsDataItem?> getNewsByTitle(String title) async {
+    List<Map> list = await _database.query(tableName,
+        columns: NewsDataItem.empty().toMap().keys.toList(),
+        where: "$filedTitle = ?",
+        whereArgs: [title],
+        limit: 1);
+    return list.isEmpty ? null : NewsDataItem.fromMap(list[0], "");
   }
 
   @override
@@ -56,17 +68,19 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       required SortBy sortBy,
       required int pageNumber}) async {
     List<NewsDataItem> result = [];
-    List<Map> list = await _database.query(
-      tableName,
-      columns: NewsDataItem.empty().toMap().keys.toList(),
-      where: "$filedId > ? and $filedId < ? ",
-      whereArgs: [from, to],
-      limit: Configs.pageSize,
-      offset: pageNumber,
-      orderBy: "$filedId ASC",
-    );
-    for (var items in list) {
-      result.add(NewsDataItem.fromMap(items, ""));
+    for (int i = 0; i < queries.length; i++) {
+      List<Map> list = await _database.query(
+        tableName,
+        columns: NewsDataItem.empty().toMap().keys.toList(),
+        where: "$filedDate > ? and $filedDate < ? and $filedSource = ?",
+        whereArgs: [from, to, queries[i]],
+        orderBy: "$filedDate Desc",
+        offset: (pageNumber - 1) * Configs.pageSize,
+        limit: Configs.pageSize,
+      );
+      for (var items in list) {
+        result.add(NewsDataItem.fromMap(items, queries[i]));
+      }
     }
     return result;
   }

@@ -31,7 +31,8 @@ class _NewsListItemViewState extends State<NewsListItemView> {
             _newsImage(),
             Expanded(
               child: Container(
-                padding: EdgeInsets.all(Insets.sm),
+                padding: EdgeInsets.symmetric(
+                    horizontal: Insets.sm, vertical: Insets.xs),
                 height: Insets.newsListItemIcon,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

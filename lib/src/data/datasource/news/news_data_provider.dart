@@ -1,4 +1,4 @@
-import 'package:flutter_us_news/src/data/dto/news/news_data_item.dart';
+import 'package:flutter_us_news/src/data/dto/news/db/news_data_item.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
 
 abstract class NewsDataProvider {

@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_us_news/res/color/ui_colors.dart';
 import 'package:flutter_us_news/res/dimens/insets.dart';
+import 'package:flutter_us_news/src/app/ui/widgets/progress/in_page_progress.dart';
 
 class NetworkImageView extends StatelessWidget {
   Size size;
@@ -19,6 +21,21 @@ class NetworkImageView extends StatelessWidget {
         width: size.width,
         height: size.height,
         fit: BoxFit.cover,
+        placeholder: (context, url) {
+          return Container(
+            width: size.width,
+            height: size.height,
+            color: UiColors.borderColor,
+            child: InPageProgress(),
+          );
+        },
+        errorWidget: (context, url, error) {
+          return Container(
+            width: size.width,
+            height: size.height,
+            color: UiColors.disableColor,
+          );
+        },
       ),
     );
   }

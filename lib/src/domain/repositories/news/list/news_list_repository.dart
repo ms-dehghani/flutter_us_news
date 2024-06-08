@@ -7,6 +7,5 @@ abstract class NewsListRepository {
       required int to,
       required List<String> queries,
       required SortBy sortBy,
-      required int pageNumber,
-      bool forceRefresh = false});
+      required int pageNumber});
 }
