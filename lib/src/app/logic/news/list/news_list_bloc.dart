@@ -52,7 +52,8 @@ class NewsListBloc extends Bloc<NewsListEvent, NewsListBlocPageData> {
     if (state.pageStatus == PageStatus.loading) {
       return;
     }
-    emit.call(state.copyWith(newsList: null, status: PageStatus.loading));
+    emit.call(state
+        .copyWith(newsList: [], trendList: [], status: PageStatus.loading));
 
     pageNumber = 1;
     var result = _newsListUseCase.invoke(

@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_us_news/res/color/ui_colors.dart';
 import 'package:flutter_us_news/res/dimens/corners.dart';
@@ -24,6 +23,12 @@ class Drawable {
       color: UiColors.itemFillColor,
       borderRadius: Corners.xLargeBorder,
       boxShadow: Shadows.small);
+
+  static BoxDecoration searchEdittextDecoration = const BoxDecoration(
+    shape: BoxShape.rectangle,
+    borderRadius: Corners.xLargeBorder,
+    color: UiColors.itemFillColor,
+  );
 
   static BoxDecoration trendListItemDecoration =
       const BoxDecoration(borderRadius: Corners.xxLargeBorder);

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_us_news/res/color/ui_colors.dart';
 import 'package:flutter_us_news/res/string/texts.dart';
 import 'package:flutter_us_news/src/app/di/di.dart';
 import 'package:flutter_us_news/src/app/ui/pages/splash/splash_screen.dart';
@@ -48,6 +49,11 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       navigatorKey: NavigationService.navigatorKey,
       title: Texts.appName,
+      theme: ThemeData(
+          useMaterial3: false,
+          primaryColor: UiColors.primary,
+          primaryColorDark: UiColors.primaryDark,
+          secondaryHeaderColor: UiColors.accent),
       debugShowCheckedModeBanner: false,
       localizationsDelegates: [
         _localeOverrideDelegate,
