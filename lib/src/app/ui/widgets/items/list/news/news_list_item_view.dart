@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_us_news/res/color/ui_colors.dart';
 import 'package:flutter_us_news/res/dimens/insets.dart';
 import 'package:flutter_us_news/res/drawable/drawable.dart';
+import 'package:flutter_us_news/res/drawable/item_splitter.dart';
 import 'package:flutter_us_news/res/styles/text_style.dart';
 import 'package:flutter_us_news/src/app/ui/widgets/image/network_image_view.dart';
 import 'package:flutter_us_news/src/domain/dto/news/news_item.dart';
@@ -71,11 +72,14 @@ class _NewsListItemViewState extends State<NewsListItemView> {
           Text(
             widget.item.title,
             maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: TextStyles.h2Bold.copyWith(color: UiColors.primaryText),
           ),
+          ItemSplitter.ultraThinSplitter,
           Text(
             widget.item.description,
             maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyles.h3.copyWith(color: UiColors.primaryText),
           )
         ],
