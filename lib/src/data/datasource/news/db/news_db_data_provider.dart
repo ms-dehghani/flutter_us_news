@@ -4,6 +4,7 @@ import 'package:flutter_us_news/src/data/datasource/news/news_data_provider.dart
 import 'package:flutter_us_news/src/data/dto/news/db/news_data_item.dart';
 import 'package:flutter_us_news/src/data/dto/news/db/news_item_static.dart';
 import 'package:flutter_us_news/src/domain/dto/sort/sort_by.dart';
+import 'package:flutter_us_news/src/utils/sort_util.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
@@ -67,22 +68,24 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
       required List<String> queries,
       required SortBy sortBy,
       required int pageNumber}) async {
-    List<NewsDataItem> result = [];
-    for (int i = 0; i < queries.length; i++) {
+    Map<String, List<NewsDataItem>> resultMap = {};
+    for (int index = 0; index < queries.length; index++) {
+      List<NewsDataItem> result = [];
       List<Map> list = await _database.query(
         tableName,
         columns: NewsDataItem.empty().toMap().keys.toList(),
         where: "$filedDate > ? and $filedDate < ? and $filedSource = ?",
-        whereArgs: [from, to, queries[i]],
+        whereArgs: [from, to, queries[index]],
         orderBy: "$filedDate Desc",
         offset: (pageNumber - 1) * Configs.pageSize,
         limit: Configs.pageSize,
       );
       for (var items in list) {
-        result.add(NewsDataItem.fromMap(items, queries[i]));
+        result.add(NewsDataItem.fromMap(items, queries[index]));
       }
+      resultMap.putIfAbsent(queries[index], () => result);
     }
-    return result;
+    return Future.value(sortBySourceAndDate(queries, resultMap));
   }
 
   @override
