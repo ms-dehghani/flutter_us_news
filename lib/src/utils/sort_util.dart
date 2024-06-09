@@ -9,7 +9,8 @@ List<NewsDataItem> sortBySourceAndDate(
     fullListLength += element.length;
   }
 
-  while (result.length < fullListLength) {
+  int sum = 0;
+  while (sum < fullListLength) {
     var findIndex = 0;
     var maxDataItem = NewsDataItem.empty();
     for (int j = 0; j < queries.length; j++) {
@@ -21,7 +22,12 @@ List<NewsDataItem> sortBySourceAndDate(
       }
     }
     result.add(maxDataItem);
+    if (result.length > 1 &&
+        result[result.length - 2].title == maxDataItem.title) {
+      result.removeLast();
+    }
     indexList[findIndex]++;
+    sum++;
   }
 
   return result;
