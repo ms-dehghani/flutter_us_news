@@ -7,6 +7,7 @@ import 'package:flutter_us_news/src/app/di/di.dart';
 import 'package:flutter_us_news/src/app/ui/pages/splash/splash_screen.dart';
 import 'package:flutter_us_news/src/base/navigation_service.dart';
 import 'package:flutter_us_news/src/utils/ht/html.dart';
+import 'package:flutter_us_news/src/utils/status_bar_color.dart';
 
 import 'applic.dart';
 import 'translations.dart';
@@ -46,6 +47,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    setStatusBarColor(UiColors.pageBackground);
     return MaterialApp(
       navigatorKey: NavigationService.navigatorKey,
       title: Texts.appName,

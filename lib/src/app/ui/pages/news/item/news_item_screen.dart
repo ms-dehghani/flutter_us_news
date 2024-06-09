@@ -21,6 +21,7 @@ import 'package:flutter_us_news/src/app/ui/widgets/progress/in_page_progress.dar
 import 'package:flutter_us_news/src/domain/dto/news/news_item.dart';
 import 'package:flutter_us_news/src/utils/device.dart';
 import 'package:flutter_us_news/src/utils/extensions/translates_string_extensions.dart';
+import 'package:flutter_us_news/src/utils/status_bar_color.dart';
 import 'package:flutter_us_news/src/utils/time_util.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -86,54 +87,54 @@ class _NewsItemScreenState extends State<NewsItemScreen>
   }
 
   Widget _newsDetailView(NewsItem newsItem) {
+    setStatusBarColor(UiColors.primaryDark, brightness: Brightness.light);
     return SafeArea(
-      child: Container(
-        color: UiColors.pageBackground,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Stack(
-              children: [
-                NetworkImageView(
+      child: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              expandedHeight: getHeight(context) / 3,
+              floating: false,
+              pinned: true,
+              leading: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: AppBarBackButton(
+                  onTap: () {
+                    Navigator.of(context).maybePop().then((value) {
+                      setStatusBarColor(UiColors.pageBackground);
+                    });
+                  },
+                ),
+              ),
+              backgroundColor: UiColors.primary,
+              flexibleSpace: FlexibleSpaceBar(
+                centerTitle: true,
+                collapseMode: CollapseMode.parallax,
+                background: NetworkImageView(
                   image: newsItem.image,
                   size: Size(getWidth(context), getHeight(context) / 4),
                   borderRadius: 0,
                 ),
-                Padding(
-                  padding: EdgeInsets.only(
-                      top: Insets.pagePadding, left: Insets.pagePadding),
-                  child: AppBarBackButton(
-                    onTap: () {
-                      Navigator.of(context).maybePop();
-                    },
-                  ),
-                ),
-              ],
-            ),
-            Expanded(
-              child: ListView(
-                padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
-                children: [
-                  ItemSplitter.ultraThickSplitter,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      _sourceItemView(newsItem),
-                      _dateItemView(newsItem)
-                    ],
-                  ),
-                  ItemSplitter.thinSplitter,
-                  _titleItemView(newsItem),
-                  _authorItemView(newsItem),
-                  ItemSplitter.thinSplitter,
-                  _descriptionItemView(newsItem),
-                  ItemSplitter.thickSplitter,
-                  _loadFullContent(newsItem),
-                  ItemSplitter.thinSplitter,
-                ],
               ),
-            )
+            ),
+          ];
+        },
+        body: ListView(
+          padding: EdgeInsets.symmetric(horizontal: Insets.pagePadding),
+          children: [
+            ItemSplitter.ultraThickSplitter,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [_sourceItemView(newsItem), _dateItemView(newsItem)],
+            ),
+            ItemSplitter.thinSplitter,
+            _titleItemView(newsItem),
+            _authorItemView(newsItem),
+            ItemSplitter.thinSplitter,
+            _descriptionItemView(newsItem),
+            ItemSplitter.thickSplitter,
+            _loadFullContent(newsItem),
+            ItemSplitter.thinSplitter,
           ],
         ),
       ),
