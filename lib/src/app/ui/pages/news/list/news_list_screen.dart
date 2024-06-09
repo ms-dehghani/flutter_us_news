@@ -295,9 +295,8 @@ class _NewsListScreenState extends State<NewsListScreen>
     todayTimeStamp = DateTime.now()
         .copyWith(hour: 23, minute: 59, second: 59)
         .millisecondsSinceEpoch;
-    yesterdayTimeStamp = todayTimeStamp -
-        (const Duration(days: 2).inMilliseconds -
-            const Duration(seconds: 2).inMilliseconds);
+    yesterdayTimeStamp =
+        todayTimeStamp - const Duration(hours: 48).inMilliseconds;
   }
 
   bool isReachedToEnd() {
