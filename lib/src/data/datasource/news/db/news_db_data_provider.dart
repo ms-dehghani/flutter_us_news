@@ -27,7 +27,7 @@ class NewsDbDataProvider extends BaseModel implements NewsDataProvider {
 
   Future<NewsDataItem> createOrUpdateNews(NewsDataItem news) async {
     var newsByTitle = await _getNewsByTitle(news.title);
-    if (newsByTitle != null) {
+    if (newsByTitle != null && news.source == newsByTitle.source) {
       news.id = newsByTitle.id;
     }
     int id = await _database.insert(tableName, news.toMap(),
