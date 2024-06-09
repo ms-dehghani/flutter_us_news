@@ -33,7 +33,7 @@ void main() {
     expect(retrieveItem.description, item.description);
   });
 
-  test('Update Item', () async {
+  test('Update Item with same sort', () async {
     var item = NewsDataItem.empty().copyWith(title: "title");
 
     await dataProvider.createOrUpdateNews(item);
@@ -47,6 +47,15 @@ void main() {
     expect(retrieveItem.author, item.author);
     expect(retrieveItem.source, item.source);
     expect(retrieveItem.description, item.description);
+  });
+
+  test('Update Item with different sort', () async {
+    var item = NewsDataItem.empty().copyWith(title: "title");
+
+    await dataProvider.createOrUpdateNews(item);
+    var item2 = item.copyWith(id: 0, description: "description", source: "1");
+    await dataProvider.createOrUpdateNews(item2);
+    expect(item2.id - item.id == 0, false);
   });
 
   test('Get Correct Item', () async {
